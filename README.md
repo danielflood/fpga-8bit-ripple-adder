@@ -42,10 +42,15 @@ This will:
 
 Example output:
 ```bash
-A B Cin | C Cout
-0 0 0   | 0 0
-0 1 1   | 0 1
-1 1 1   | 1 1
+Cin A  B  | S Cout
+0   0  0  | 0  0
+0   1  0  | 1  0
+0   0  1  | 1  0
+0   1  1  | 0  1
+1   0  0  | 1  0
+1   1  0  | 0  1
+1   0  1  | 0  1
+1   1  1  | 1  1
 ```
 
 View waveforms (optional):
@@ -63,10 +68,9 @@ Clean generated files:
 make clean
 ```
 ## 🧠 Notes
-- iverilog compiles Verilog source into a simulation executable (sim.out).
-- vvp runs the simulation and produces a waveform file (waves.vcd).
-- gtkwave lets you visualize signal transitions over time.
-- The Makefile uses := for immediate variable expansion to keep paths stable.
+- **iverilog** compiles Verilog source into a simulation executable (sim.out).
+- **vvp** runs the simulation and produces a waveform file (waves.vcd).
+- **gtkwave** lets you visualize signal transitions over time.
 
 ## 🏗️ Next steps
 This basic module will later be extended into a multi-bit ripple-carry adder implemented in Verilog and integrated with Vivado and Vitis on a Zynq platform.
