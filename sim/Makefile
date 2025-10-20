@@ -1,20 +1,62 @@
-SRC 	:= ../hdl/adder_1bit.v ../hdl/tb/adder_1bit_tb.v
-OUT		:= sim.out
-WAVE 	:= waves.vcd
+# Simple, reproducible simulation Makefile
+SIM        ?= iverilog
+RUN        ?= vvp
+GTKWAVE    ?= gtkwave
 
-.PHONY: all clean view
+SRC_DIR    := ../hdl
+BUILD_DIR  := build
+WAVES_DIR  := waves
 
-all: $(OUT)
-	vvp $(OUT)
+RTL        := $(SRC_DIR)/adder_1bit.v $(SRC_DIR)/adder_8bit.v
+TB1        := $(SRC_DIR)/tb/adder_1bit_tb.v
+TB8        := $(SRC_DIR)/tb/adder_8bit_tb.v
 
-$(OUT): $(SRC)
-	iverilog -o $@ $(SRC)
+OUT1       := $(BUILD_DIR)/sim1.vvp
+OUT8       := $(BUILD_DIR)/sim8.vvp
+LOG1       := $(BUILD_DIR)/sim1.log
+LOG8       := $(BUILD_DIR)/sim8.log
 
-view: $(WAVE)
-	gtkwave $(WAVE) &
+WAVE1      := $(WAVES_DIR)/waves.vcd
+WAVE8      := $(WAVES_DIR)/waves_8bit.vcd
 
-$(WAVE): $(OUT)
-	vvp $(OUT)
+SIM_FLAGS  := -Wall
+
+.PHONY: all sim1 sim8 view1 view8 clean
+
+all: sim1
+
+# compile-only targets
+$(OUT1): | $(BUILD_DIR)
+	$(SIM) $(SIM_FLAGS) -o $@ $(SRC_DIR)/adder_1bit.v $(TB1)
+
+$(OUT8): | $(BUILD_DIR)
+	$(SIM) $(SIM_FLAGS) -o $@ $(RTL) $(TB8)
+
+# run targets (capture logs)
+sim1: $(OUT1) | $(WAVES_DIR)
+	@echo "Running 1-bit TB..."
+	$(RUN) $(OUT1) > $(LOG1) 2>&1 || (cat $(LOG1); false)
+	@echo "Log: $(LOG1)"
+
+sim8: $(OUT8) | $(WAVES_DIR)
+	@echo "Running 8-bit exhaustive TB..."
+	$(RUN) $(OUT8) > $(LOG8) 2>&1 || (cat $(LOG8); false)
+	@echo "Log: $(LOG8)"
+
+view1: sim1
+	$(GTKWAVE) $(WAVE1) &	
+
+view8: sim8
+	$(GTKWAVE) $(WAVE8) &
+
+# build directory
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+# waves directory
+$(WAVES_DIR):
+	mkdir -p $(WAVES_DIR)
 
 clean:
-	rm -f $(OUT) $(WAVE)
+	rm -rf $(BUILD_DIR)
+	rm -rf $(WAVES_DIR)
