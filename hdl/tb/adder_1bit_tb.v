@@ -22,7 +22,7 @@ adder_1bit uut (
 
 // 4. Apply test patterns
 initial begin
-    $dumpfile("waves/waves.vcd");   // waveform output file
+    $dumpfile("waves/waves_1bit.vcd");   // waveform output file
     $dumpvars(0, adder_1bit_tb);
     $display("Cin A  B  | S Cout");
     $monitor("%b   %b  %b  | %b  %b", Cin, A, B, S, Cout);
