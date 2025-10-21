@@ -1,4 +1,4 @@
-# 1-Bit Adder (Verilog) — Simulation with Icarus Verilog
+# 8-Bit Adder (Verilog)
 
 This project implements a simple 8-bit ripple adder in Verilog and tests it using **Icarus Verilog** and **GTKWave**.  
 I'm using this project to learn how to structure HDL projects cleanly with a separate simulation directory and Makefile.
