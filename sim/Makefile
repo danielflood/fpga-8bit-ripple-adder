@@ -13,22 +13,19 @@ TB8        := $(SRC_DIR)/tb/adder_8bit_tb.v
 
 OUT1       := $(BUILD_DIR)/sim1.vvp
 OUT8       := $(BUILD_DIR)/sim8.vvp
-OUTTOP     := $(BUILD_DIR)/sim_top.vvp
 
 LOG1       := $(BUILD_DIR)/sim1.log
 LOG8       := $(BUILD_DIR)/sim8.log
-LOGTOP     := $(BUILD_DIR)/sim_top.log
 
 WAVE1      := $(WAVES_DIR)/waves_1bit.vcd
 WAVE8      := $(WAVES_DIR)/waves_8bit.vcd
-WAVETOP    := $(WAVES_DIR)/waves_top.vcd
 
 SIM_FLAGS  := -Wall
 
-.PHONY: all sim1 sim8 sim_top view1 view8 view_top clean
+.PHONY: all sim1 sim8 view1 view8 clean
 
-# Default now runs and opens the top-level simulation
-all: view_top
+# Default now runs and opens the 8-bit adder simulation
+all: view8
 
 # compile-only targets
 $(OUT1): | $(BUILD_DIR)
@@ -36,9 +33,6 @@ $(OUT1): | $(BUILD_DIR)
 
 $(OUT8): | $(BUILD_DIR)
 	$(SIM) $(SIM_FLAGS) -o $@ $(RTL) $(TB8)
-
-$(OUTTOP): | $(BUILD_DIR)
-	$(SIM) $(SIM_FLAGS) -o $@ $(SRC_DIR)/top.v $(RTL) $(SRC_DIR)/tb/top_tb.v
 
 # run targets (capture logs)
 sim1: $(OUT1) | $(WAVES_DIR)
@@ -51,19 +45,11 @@ sim8: $(OUT8) | $(WAVES_DIR)
 	$(RUN) $(OUT8) > $(LOG8) 2>&1 || (cat $(LOG8); false)
 	@echo "Log: $(LOG8)"
 
-sim_top: $(OUTTOP) | $(WAVES_DIR)
-	@echo "Running top-level TB..."
-	$(RUN) $(OUTTOP) > $(LOGTOP) 2>&1 || (cat $(LOGTOP); false)
-	@echo "Log: $(LOGTOP)"
-
 view1: sim1
 	$(GTKWAVE) $(WAVE1)	
 
 view8: sim8
 	$(GTKWAVE) $(WAVE8)
-
-view_top: sim_top
-	$(GTKWAVE) $(WAVETOP)
 
 # build directory
 $(BUILD_DIR):

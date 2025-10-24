@@ -4,16 +4,12 @@ module adder_1bit(
     input A,
     input B,
     input Cin,
-    output reg S,
-    output reg Cout
+    output S,
+    output Cout
 ); 
 
 wire p = A ^ B;
 
-always @ (*) 
-begin
-    S = p ^ Cin;
-    Cout = (A & B) | (Cin & p);
-end 
-
+assign S = p ^ Cin;
+assign Cout = (A & B) | (Cin & p);
 endmodule
