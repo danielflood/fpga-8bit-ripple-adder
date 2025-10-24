@@ -2,3 +2,11 @@
 *.out
 *.vcd
 *.vvp
+
+vivado/build/
+*.jou
+*.log
+*.str
+*.runs/
+*.cache/
+*.hw/
