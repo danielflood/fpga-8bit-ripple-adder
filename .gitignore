@@ -1,11 +1,12 @@
+.Xil/
+vitis/workspace/
+vivado/build/
+vivado/export/
+*.jou
 *.log
 *.out
 *.vcd
 *.vvp
-
-vivado/build/
-*.jou
-*.log
 *.str
 *.runs/
 *.cache/

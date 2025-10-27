@@ -30,7 +30,7 @@ module top(
 
    // Instantiate system wrapper with explicit port connections
    // (Vivado synthesis does not accept the SystemVerilog '.*' implicit port map)
-   sys_wrapper u_sys(
+   processing_system_wrapper u_sys(
       .DDR_addr(DDR_addr),
       .DDR_ba(DDR_ba),
       .DDR_cas_n(DDR_cas_n),
@@ -52,8 +52,8 @@ module top(
       .FIXED_IO_ps_clk(FIXED_IO_ps_clk),
       .FIXED_IO_ps_porb(FIXED_IO_ps_porb),
       .FIXED_IO_ps_srstb(FIXED_IO_ps_srstb),
-      .gpio2_io_i_0(gpio2_io_i),
-      .gpio_io_o_0(gpio_io_o)
+      .GPIO2_0_tri_i(gpio2_io_i),
+      .GPIO_0_tri_o(gpio_io_o)
    );
 
    // Split gpio into two 8-bit operands
