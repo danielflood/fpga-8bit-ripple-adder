@@ -37,9 +37,9 @@
 proc checkRequiredFiles { origin_dir} {
   set status true
   set files [list \
- "[file normalize "$origin_dir/build/build.srcs/sources_1/imports/hdl/adder_1bit.v"]"\
- "[file normalize "$origin_dir/build/build.srcs/sources_1/imports/hdl/adder_8bit.v"]"\
- "[file normalize "$origin_dir/build/build.srcs/sources_1/imports/hdl/top.v"]"\
+  " [file normalize "${origin_dir}/hdl/adder_1bit.v"]"\
+  " [file normalize "${origin_dir}/hdl/adder_8bit.v"]"\
+  " [file normalize "${origin_dir}/hdl/top.v"]\"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -129,14 +129,14 @@ if { $validate_required } {
 }
 
 # Create project
-create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7z020clg400-1
+create_project ${_xil_proj_name_} ${origin_dir}/vivado/${_xil_proj_name_} -part xc7z020clg400-1 -force
 
 # Set the directory path for the new project
 set proj_dir [get_property directory [current_project]]
 
 # Set project properties
 set obj [current_project]
-set_property -name "board_part_repo_paths" -value "[file normalize "$origin_dir/../../../.Xilinx/Vivado/2022.2/xhub/board_store/xilinx_board_store"]" -objects $obj
+set_property -name "board_part_repo_paths" -value "[file normalize "${origin_dir}/boards/arty-z7-20/"]" -objects $obj
 set_property -name "board_part" -value "digilentinc.com:arty-z7-20:part0:1.0" -objects $obj
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
 set_property -name "enable_resource_estimation" -value "0" -objects $obj
@@ -161,9 +161,9 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 set obj [get_filesets sources_1]
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/build/build.srcs/sources_1/imports/hdl/adder_1bit.v"]\
- [file normalize "${origin_dir}/build/build.srcs/sources_1/imports/hdl/adder_8bit.v"]\
- [file normalize "${origin_dir}/build/build.srcs/sources_1/imports/hdl/top.v"]\
+ [file normalize "${origin_dir}/hdl/adder_1bit.v"]\
+ [file normalize "${origin_dir}/hdl/adder_8bit.v"]\
+ [file normalize "${origin_dir}/hdl/top.v"]\
 ]
 set imported_files [import_files -fileset sources_1 $files]
 

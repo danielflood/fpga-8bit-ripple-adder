@@ -46,6 +46,11 @@ fpga-8bit-ripple-adder/
 - Clean generated files:  
   `make -C sim clean`
 
+## Create vivado project
+```bash
+vivado -mode batch -source ./vivado/build.tcl 
+```
+
 ## 🧠 Notes
 - **iverilog** compiles Verilog source into a simulation executable (e.g. sim1.vvp).
 - **vvp** runs the simulation and produces a waveform file (e.g. waves.vcd).
